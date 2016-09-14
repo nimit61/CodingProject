@@ -1,16 +1,40 @@
+import java.util.HashMap;
+import java.util.Map;
 
-public class LRUCache {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Cache cache = new Cache(2);
-		cache.set(1, 10);
-		cache.set(5, 12);
-		System.out.println(cache.get(5));
-		System.out.println(cache.get(1));
-		System.out.println(cache.get(10));
-		cache.set(6, 14);
-		System.out.println(cache.get(5));
+public class LRUCache implements Cache{
+	
+	CacheList cacheList;
+	Map<Integer, CacheNode> cacheMap;
+	int capacity;
+	
+	public LRUCache(int capacity) {
+		this.cacheList = new CacheList();
+		this.cacheMap = new HashMap<Integer, CacheNode>();
+		this.capacity = capacity;
+	}
+	
+	public int get(int key) {
+		if(!cacheMap.containsKey(key)) {
+			return -1;
+		}
+		CacheNode cachedNode = cacheMap.get(key);
+		CacheNode newNode = new CacheNode(cachedNode.getKey(), cachedNode.getValue());
+		cacheList.insertAtBeginning(newNode);
+		cacheList.deleteLastNode();
+		return newNode.getValue();
+	}
+	
+	public void set(int key, int value) {
+		if(cacheMap.containsKey(key)) {
+			return;
+		}
+		CacheNode node = new CacheNode(key, value);
+		if(cacheList.getNodeCount() == capacity) {
+			cacheMap.remove(cacheList.getLastNode().key);
+			cacheList.deleteLastNode();
+		} 
+		cacheList.insertAtBeginning(node);
+		cacheMap.put(key, node);
 	}
 
 }
