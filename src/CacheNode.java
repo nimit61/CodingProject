@@ -16,4 +16,9 @@ public class CacheNode {
 	public int getValue() {
 		return this.value;
 	}
+
+	public int getKey() {
+		// TODO Auto-generated method stub
+		return this.key;
+	}
 }

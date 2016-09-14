@@ -20,9 +20,10 @@ public class Cache {
 			return -1;
 		}
 		CacheNode cachedNode = cacheMap.get(key);
-		cacheList.insertAtBeginning(cachedNode);
-		cacheList.deleteNodeGivenNode(cachedNode);
-		return cachedNode.getValue();
+		CacheNode newNode = new CacheNode(cachedNode.getKey(), cachedNode.getValue());
+		cacheList.insertAtBeginning(newNode);
+		cacheList.deleteLastNode();
+		return newNode.getValue();
 	}
 	
 	public void set(int key, int value) {
@@ -31,6 +32,7 @@ public class Cache {
 		}
 		CacheNode node = new CacheNode(key, value);
 		if(cacheList.getNodeCount() == capacity) {
+			cacheMap.remove(cacheList.getLastNode().key);
 			cacheList.deleteLastNode();
 		} 
 		cacheList.insertAtBeginning(node);
