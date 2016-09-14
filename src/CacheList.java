@@ -18,9 +18,12 @@ public class CacheList {
 
 	public void insertAtBeginning(CacheNode node) {
 		node.next = this.head;
+		if(this.head != null) {
+			this.head.previous = node;
+		}
 		this.head = node;
 		this.nodeCount++;
-		if (head.next == null) {
+		if (this.head.next == null) {
 			this.last = head;
 		}
 	}
@@ -51,9 +54,14 @@ public class CacheList {
 			node.previous = null;
 			node = null;
 		}
+		this.nodeCount--;
 	}
 
 	public void deleteLastNode() {
 		deleteNodeGivenNode(this.last);
+	}
+	
+	public CacheNode getLastNode() {
+		return this.last;
 	}
 }
